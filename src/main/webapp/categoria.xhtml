@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>CATEGORIA</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        
+        <h:form>
+            <p:fieldset legend="CATEGORIA">
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="Nova" actionListener="#{categoriaBean.novo()}"
+                                         update="@form"></p:commandButton>
+
+                        <p:commandButton value="Pesquisar" actionListener="#{categoriaBean.pesquisar()}"
+                                         update="@form"></p:commandButton>
+
+                        <p:commandButton value="Salvar" actionListener="#{categoriaBean.adicionarCategoria()}"
+                                         update="@form" 
+                                         rendered="#{categoriaBean.statusTela != 'PESQUISANDO'}"></p:commandButton>
+                        <p:button outcome="faces/categoria.xhtml" value="Cadastra categoria" ></p:button>
+                        <p:button outcome="faces/produto.xhtml" value="Cadastra produto" ></p:button>
+                        <p:button outcome="faces/index.xhtml" value="Cadastra Usuário" ></p:button>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <!-- Mensagem em linha em baixo da toolbar -->
+                <p:messages autoUpdate="true" showDetail="true"></p:messages>
+
+                <!-- Mensagem flutuante no canto superior direito -->
+                <p:growl autoUpdate="true" showDetail="true"></p:growl>
+
+                <p:panelGrid columns="2" styleClass="ui-noborder" 
+                             rendered="#{categoriaBean.statusTela != 'PESQUISANDO'}">
+
+                    <p:outputLabel value="Nome"></p:outputLabel>
+                    <p:inputText value="#{categoriaBean.categoria.nome}"></p:inputText>
+                    
+                </p:panelGrid>
+
+                <p:dataTable value="#{categoriaBean.categorias}" var="cate"
+                             rendered="#{categoriaBean.statusTela == 'PESQUISANDO'}">
+
+                    <p:column headerText="ID">
+                        <h:outputText value="#{cate.id}"></h:outputText>
+                    </p:column>                    
+                    <p:column headerText="Nome">
+                        <h:outputText value="#{cate.nome}"></h:outputText>
+                    </p:column>
+                    
+                    <p:column>
+                        <p:commandButton value="Delete" update="@form"
+                                         actionListener="#{categoriaBean.remover(cate)}">
+                            <p:confirm header="Confirmação" message="Tem certeza que deseja apagar para sempre?" icon="fa fa-exclamation-triangle" />
+                        </p:commandButton>
+
+                        <p:commandButton value="Editar" update="@form"
+                                         actionListener="#{categoriaBean.editar(cate)}"></p:commandButton>
+                    </p:column>
+                </p:dataTable>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-trash-o" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-undo" />
+                </p:confirmDialog> 
+            </p:fieldset>
+            
+            
+            
+        </h:form>
+        
+         
+    </h:body>
+</html>
